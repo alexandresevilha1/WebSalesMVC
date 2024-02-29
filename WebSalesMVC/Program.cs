@@ -2,12 +2,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using System.Configuration;
 using WebSalesMVC.Data;
+using WebSalesMVC.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionStr = "server=localhost;userid=alex;password=1234;database=saleswebmvcappdb";
 builder.Services.AddDbContext<WebSalesMVCContext>(options =>
     options.UseMySql(connectionStr, ServerVersion.AutoDetect(connectionStr)));
 
 builder.Services.AddScoped<SeedingService>();
+builder.Services.AddScoped<SellerService>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
