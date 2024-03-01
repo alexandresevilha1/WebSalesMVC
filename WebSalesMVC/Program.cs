@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Localization;
 using System.Configuration;
 using WebSalesMVC.Data;
 using WebSalesMVC.Services;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionStr = "server=localhost;userid=alex;password=1234;database=saleswebmvcappdb";
@@ -12,6 +14,14 @@ builder.Services.AddDbContext<WebSalesMVCContext>(options =>
 builder.Services.AddScoped<SeedingService>();
 builder.Services.AddScoped<SellerService>();
 builder.Services.AddScoped<DepartmentService>();
+
+var enUS = new CultureInfo("en-US");
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("en-US"),
+    SupportedCultures = new List<CultureInfo> { enUS },
+    SupportedUICultures = new List<CultureInfo> { enUS }
+};
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
