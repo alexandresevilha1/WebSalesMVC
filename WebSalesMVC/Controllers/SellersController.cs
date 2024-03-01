@@ -7,18 +7,18 @@ namespace WebSalesMVC.Controllers
 {
     public class SellersController : Controller
     {
-        private readonly SellerService _selllerService;
+        private readonly SellerService _sellerService;
         private readonly DepartmentService _departmentService;
 
         public SellersController(SellerService selllerService, DepartmentService departmentService)
         {
-            _selllerService = selllerService;
+            _sellerService = selllerService;
             _departmentService = departmentService;
         }
 
         public IActionResult Index()
         {
-            var list = _selllerService.FindAll();
+            var list = _sellerService.FindAll();
             return View(list);
         }
 
@@ -33,7 +33,30 @@ namespace WebSalesMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller) 
         {
-            _selllerService.Insert(seller);
+            _sellerService.Insert(seller);
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int? id) 
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var obj = _sellerService.FindById(id.Value);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            _sellerService.Remove(id);
             return RedirectToAction(nameof(Index));
         }
     }
